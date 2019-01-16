@@ -14,7 +14,8 @@ class App extends Component {
     super();
 
     this.state = {
-      posts: []
+      posts: [],
+      searchInput: '',
     };
 
     this.updatePost = this.updatePost.bind( this );
@@ -56,12 +57,25 @@ class App extends Component {
       })
   }
 
+  filterPosts(text) {
+    axios 
+      .get(baseUrl+'posts/filter', {text})
+      .then(response => {
+        console.log(response.data)
+        this.setState({posts: response.data})
+        console.log(this.state.searchInput)
+      })
+  }
+
   render() {
     const { posts } = this.state;
     // console.log(this.state.posts.length && this.state.posts[1].date)
     return (
       <div className="App__parent">
-        <Header />
+        <Header 
+          filterPostsFn={this.filterPosts}
+          searchInput={this.state.searchInput}
+        />
 
         <section className="App__content">
 
